@@ -1,0 +1,98 @@
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  background-image: url(/static/image/brain\ anatomy\ hero.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* overflow-y: auto; Add vertical scrolling */
+  overflow: hidden;
+}
+
+
+footer {
+  background-color: #95bce4;
+  color: #fff;
+  padding: 20px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+ 
+}
+
+.footer-content {
+  text-align: center;
+}
+
+.footer-content p {
+  margin-bottom: 5px;
+}
+
+.footer-content a {
+  color: #fff;
+}
+
+.footer-content a:hover {
+  color: #ccc;
+}
+
+#upload-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+#upload-card {
+  overflow-y: auto; /* Allow vertical scrolling within the card */
+  max-height: 80vh; /* Limit the card height to 80% of the viewport height */
+  width: 40%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white; /* Ensure the card has a background color */
+  border-radius: 8px; /* Optional: rounded corners */
+}
+.preview-image-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+#preview-image {
+    width: 200px; /* Set the desired width */
+    height: 200px; /* Set the desired height */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    margin-top: 10px; /* Optional: Add some margin to the top */
+}
+
+ /* Adjust the max-height to fit your needs */
+#signupModal .modal-dialog {
+max-width: 35%; /* Optional: Adjust the width of the modal */
+}
+
+#signupModal .modal-body {
+max-height: calc(80vh - 120px); /* Adjust as needed */
+overflow-y: auto; /* Add vertical scrolling */
+}
+
+/* Optional: Center the modal vertically */
+#signupModal .modal-dialog {
+margin: auto;
+margin-top: 30px;
+}
+
+#user-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #007bff; /* Set your desired background color */
+  color: #fff;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 10px;
+}

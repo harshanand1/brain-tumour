@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Navbar with Modals and Footer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+
+        <a class="navbar-brand" href="#">
+            <img src="/static/image/logo.jpg" alt="logo" style="width: 30px; height:30px;">
+            BRAIN TUMOUR DETECTION
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('aboutus')}}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact Us</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user_initial %}
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><span id="user-icon">{{ user_initial }}</span>Logged in as: {{ user_initial }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light mx-2" data-toggle="modal" data-target="#loginModal"
+                            id="loginButton">Login</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light" data-toggle="modal" data-target="#signupModal"
+                            id="signupButton">Signup</button>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    
+
+     <!-- Flash message display section -->
+     <div class="container mt-5">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                <div class="alert-section">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Login Form Goes Here -->
+                <form action="{{ url_for('user_login') }}" method="post">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="captcha">Enter Captcha:</label>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" readonly id="captcha">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="captchaInput">
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Captcha not visible <img src="/static/image/refresh.png" width="40px" onclick="refreshCaptcha()"></small>
+                    </div>
+                    <a href="{{url_for('forgot')}}">Forgot password?</a>
+                    <a href="{{ url_for('google_login') }}">Sign in with Google</a>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <div class="modal-footer mt-5">
+                    <p>New user? <button class="btn btn-link" id="goToSignup">Sign up</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalLabel">Signup</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Signup Form Goes Here -->
+                    <form action="{{ url_for('signup') }}" method="post">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" class="form-control" placeholder="Enter your name" name="name" required>
+                            <div class="invalid-feedback" id="name-error">Please enter a valid name</div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="email2">Email:</label>
+                            <input type="email" id="email2" class="form-control" placeholder="Enter your email" name="email" required>
+                            <div class="invalid-feedback" id="email-error2">Please enter a valid email</div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="password2">Create password:</label>
+                            <input type="password" id="password2" class="form-control" placeholder="Create password" name="password" required>
+                            <div class="invalid-feedback" id="password-error2">Enter a valid password</div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm password:</label>
+                            <input type="password" id="confirm-password" class="form-control" placeholder="Confirm password" name="confirm-password" required>
+                            <div class="invalid-feedback" id="confirm-password-error">Enter a confirm password</div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="dob">Date of Birth:</label>
+                            <input type="date" id="dob" class="form-control" name="dob" required>
+                            <div class="invalid-feedback" id="dob-error">Please enter your date of birth</div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="Phone Number" name="phone" required>
+                            <div class="invalid-feedback" id="phone-error">Please enter a valid phone number</div>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" class="form-control" name="gender" required>
+                                <option value="" disabled selected>Select your gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    
+                        <button type="submit" class="btn btn-primary">Signup</button>
+                    </form>
+                    
+                    
+                    <div class="modal-footer mt-5">
+                        <p>Already a new User? <button class="btn btn-link" id="goToSignup">Login</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<br>
+<br>
+    <!-- Card View with Upload Button -->
+    <!-- Card View with Upload Button -->
+<section class="container" id="upload-card" style="width: 40%;">
+    <article class="card">
+      <header class="card-header text-dark">
+        Upload Image
+      </header>
+      <div class="card-body">
+        <form action="/predict" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="image-file-input">Select an image file:</label>
+            <input type="file" class="form-control-file" id="image-file-input" name="image_file" onchange="previewImage(event)">
+          </div>
+          <div class="preview-image-container">
+            <img id="preview-image" src="#" alt="Preview Image">
+          </div>
+          <button type="submit" class="btn btn-primary" id="upload-button">Upload</button>
+          <button type="button" class="btn btn-secondary ml-2" id="reset-upload" onclick="resetForm()">Reset</button>
+        </form>
+        {% if image_name %}
+          <div class="uploaded-image-container">
+            <h5>Uploaded Image:</h5>
+            <img src="{{ url_for('send_image', filename=image_name) }}" alt="Uploaded Image" style="width: 50%; height: 50%;">
+          </div>
+        {% endif %}
+      </div>
+    </article>
+  </section>
+     
+    <!-- Footer -->
+    <footer >
+        <div class="footer-content">
+            <p>&copy; 2023 Brain Tumour Detector</p>
+            <p>Contact us: contact@braintumourdetector.com</p>
+            <p>
+                <a href="{{url_for('privacy')}}">Privacy Policy</a> |
+                <a href="{{url_for('terms')}}">Terms and Conditions</a> |
+                <a href="{{url_for('disclaimer')}}">Disclaimer</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<script src="/static/js/script.js"></script>
+
+
+
+</body>
+
+</html>

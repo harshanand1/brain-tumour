@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Upload Result</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      body {
+        background-image: url('/static/image/bg.jpg'); /* replace with your background image file */
+        background-size: cover;
+        background-position: center;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 50px;
+      }
+      .navbar {
+        background-color: #343a40;
+      }
+      .navbar-brand, .navbar-nav .nav-link {
+        color: #ffffff;
+      }
+      footer {
+        background-color: #343a40;
+        color: #ffffff;
+        text-align: center;
+        padding: 10px 0;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+      }
+      .link-list a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      .link-list a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="#">Tumor Detection</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="text-center">Result</h1>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h2>Uploaded Image</h2>
+            </div>
+            <div class="card-body text-center">
+              <img src="{{ url_for('send_image', filename=image_name) }}" alt="Uploaded Image" class="img-fluid" style="width: 50%; height: 50%;">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h2>Tumor Detection Result</h2>
+            </div>
+            <div class="card-body">
+              {% if tumor_detected %}
+                <p class="text-danger"><strong>Tumor detected!</strong></p>
+                <ul class="text-danger">
+                  <li>Immediate consultation recommended</li>
+                  <li>Further diagnostic tests needed</li>
+                  <li>Start treatment planning</li>
+                </ul>
+                <p>Find a specialist:</p>
+                <ul class="link-list">
+                  <li><a href="https://www.healthgrades.com" target="_blank">Healthgrades</a></li>
+                  <li><a href="https://www.zocdoc.com" target="_blank">Zocdoc</a></li>
+                  <li><a href="https://www.webmd.com" target="_blank">WebMD</a></li>
+                </ul>
+              {% else %}
+                <p class="text-success"><strong>No tumor detected.</strong></p>
+                <ul class="text-success">
+                  <li>Routine check-up recommended</li>
+                  <li>Maintain healthy lifestyle</li>
+                </ul>
+                <p>Maintain a healthy diet:</p>
+                <ul class="link-list">
+                  <li><a href="https://www.choosemyplate.gov" target="_blank">ChooseMyPlate</a></li>
+                  <li><a href="https://www.eatright.org" target="_blank">Eat Right (Academy of Nutrition and Dietetics)</a></li>
+                  <li><a href="https://www.nutrition.gov" target="_blank">Nutrition.gov</a></li>
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Tumor Detection. All rights reserved.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
